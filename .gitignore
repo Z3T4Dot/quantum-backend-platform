@@ -116,3 +116,12 @@ HTML's/
 CHANGELOG.md
 quantum-api-tester.html
 *.html
+
+# ── Archivos sensibles locales (nunca subir) ──────────────────────────────────
+dump.sql
+dump.txt
+*.dump.zip
+celebrate_import.py
+celebrate_import_results.json
+import_products.sql
+quantum-by-brandex-*.json
