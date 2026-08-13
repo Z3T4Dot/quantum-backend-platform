@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUANTUM — Central de Despachos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #080c0a;
+    --bg-panel: #0d1210;
+    --bg-card: rgba(255,255,255,0.03);
+    --bg-card-hover: rgba(255,255,255,0.06);
+    --bg-sidebar: #0a0f0d;
+    --green-electric: #a3ff47;
+    --green-dim: rgba(163,255,71,0.12);
+    --green-glow: rgba(163,255,71,0.25);
+    --green-trace: rgba(163,255,71,0.04);
+    --border: rgba(255,255,255,0.07);
+    --border-green: rgba(163,255,71,0.2);
+    --text-primary: #f0f4ee;
+    --text-secondary: rgba(240,244,238,0.5);
+    --text-muted: rgba(240,244,238,0.25);
+    --enviada: #47b8ff;
+    --enviada-bg: rgba(71,184,255,0.12);
+    --confirmada: #a3ff47;
+    --confirmada-bg: rgba(163,255,71,0.1);
+    --pendiente: #ffb347;
+    --pendiente-bg: rgba(255,179,71,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    font-family: 'Barlow', sans-serif;
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(163,255,71,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(163,255,71,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(163,255,71,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+  }
+
+  .sidebar-logo {
+    padding: 22px 20px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .logo-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--green-electric);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--green-electric);
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  .logo-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: rgba(163,255,71,0.5);
+    letter-spacing: 0.08em;
+    padding: 10px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .location-pin { font-size: 10px; color: var(--green-electric); }
+
+  .sidebar-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    padding: 18px 20px 8px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section-label::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: var(--green-electric);
+    margin-top: 4px;
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green-electric);
+  }
+
+  .nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 12px;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    user-select: none;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    background: var(--green-dim);
+    color: var(--green-electric);
+  }
+  .nav-item.active {
+    box-shadow: inset 2px 0 0 var(--green-electric), 0 0 20px rgba(163,255,71,0.08);
+  }
+
+  .nav-icon { width: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  .nav-item:hover .nav-icon, .nav-item.active .nav-icon { color: var(--green-electric); }
+  .nav-chevron { margin-left: auto; font-size: 9px; color: var(--text-muted); transition: transform 0.2s; }
+  .nav-item.open .nav-chevron { transform: rotate(90deg); }
+
+  .subnav { display: flex; flex-direction: column; gap: 1px; padding: 2px 0 2px 28px; overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+  .subnav.open { max-height: 200px; }
+  .subnav-item {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .subnav-item.active, .subnav-item:hover { color: var(--green-electric); background: rgba(163,255,71,0.05); }
+
+  .sidebar-version { padding: 12px 20px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); border-top: 1px solid var(--border); }
+
+  /* ── MAIN ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 5; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    height: 56px;
+    background: rgba(10,15,12,0.95);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+  }
+
+  .topbar-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .topbar-breadcrumb .sep { color: var(--text-muted); }
+  .topbar-spacer { flex: 1; }
+
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .topbar-user:hover { background: var(--bg-card-hover); }
+
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #a3ff47 0%, #5aa820 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #0a0f0d;
+    box-shadow: 0 0 12px rgba(163,255,71,0.3);
+  }
+
+  .user-info { display: flex; flex-direction: column; }
+  .user-name { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-primary); }
+  .user-role { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(163,255,71,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── CONTENT ── */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(163,255,71,0.15) transparent;
+  }
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-thumb { background: rgba(163,255,71,0.15); border-radius: 2px; }
+
+  /* PAGE HEADER */
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .page-title-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .page-title-row { display: flex; align-items: center; gap: 12px; }
+  .page-icon { width: 36px; height: 36px; background: var(--green-dim); border: 1px solid var(--border-green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--green-electric); }
+  .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 0.03em; text-transform: uppercase; color: var(--text-primary); }
+  .page-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; padding-left: 48px; }
+  
+  .btn-new-request {
+    background: var(--green-dim);
+    border: 1px solid var(--border-green);
+    color: var(--green-electric);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-new-request:hover { background: rgba(163,255,71,0.2); box-shadow: 0 0 15px rgba(163,255,71,0.2); }
+
+  /* KPI CARDS */
+  .kpi-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-bottom: 24px; }
+  .kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; position: relative; backdrop-filter: blur(10px); transition: all 0.2s; animation: fade-up 0.4s ease backwards; }
+  .kpi-card:hover { border-color: var(--border-green); background: var(--bg-card-hover); }
+  .kpi-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; white-space: nowrap; }
+  .kpi-value { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--green-electric); line-height: 1; transition: all 0.3s; }
+  .kpi-card.highlight .kpi-value { color: #47b8ff; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── WORKSPACE GRID ── */
+  .workspace-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; margin-bottom: 24px; align-items: start; }
+
+  .panel-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; backdrop-filter: blur(10px); }
+  .panel-title { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 16px; border-left: 3px solid var(--green-electric); padding-left: 10px; }
+
+  /* FORMS */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-section-title { grid-column: span 2; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green-electric); letter-spacing: 0.05em; margin-top: 6px; text-transform: uppercase; }
+  
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group.full-width { grid-column: span 2; }
+  .field-group label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+  
+  .input-ctrl, .select-ctrl, .textarea-ctrl {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .input-ctrl:focus, .select-ctrl:focus, .textarea-ctrl:focus { border-color: rgba(163,255,71,0.4); background: rgba(163,255,71,0.02); }
+  .select-ctrl option { background: #0d1210; color: var(--text-primary); }
+
+  .location-input-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .location-input-row:last-child { margin-bottom: 0; }
+  .btn-action-small { min-width: 32px; height: 32px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; flex-shrink: 0; }
+  .btn-action-small:hover { border-color: var(--border-green); color: var(--green-electric); }
+  .btn-add-dest { width: 100%; font-size: 11px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; padding: 0 10px; color: var(--text-muted); }
+  .btn-add-dest:hover { color: var(--green-electric); }
+
+  .checkbox-label { display: flex; align-items: center; gap: 8px; font-family: 'Barlow', sans-serif; font-size: 12px; color: var(--text-secondary); cursor: pointer; user-select: none; }
+  .checkbox-label input { accent-color: var(--green-electric); }
+
+  .btn-submit-form {
+    grid-column: span 2;
+    background: transparent;
+    border: 1px solid var(--border-green);
+    color: var(--green-electric);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(163,255,71,0.05);
+  }
+  .btn-submit-form:hover { background: var(--green-dim); box-shadow: 0 0 20px rgba(163,255,71,0.15); }
+  .btn-submit-form:active { transform: scale(0.99); }
+
+  /* DATA TABLES (COSTS) */
+  .mini-table { width: 100%; border-collapse: collapse; }
+  .mini-table th { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--text-muted); text-align: left; padding: 8px; border-bottom: 1px solid var(--border); letter-spacing: 0.05em; }
+  .mini-table td { padding: 10px 8px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.02); color: var(--text-secondary); }
+  .mini-table tr:hover td { color: var(--text-primary); background: rgba(255,255,255,0.01); }
+  .mini-table .highlight-cell { font-family: 'JetBrains Mono', monospace; color: var(--green-electric); font-weight: 500; }
+
+  /* ── RECENT REQUESTS TABLE ── */
+  .table-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: 10px; }
+  .table-header { display: grid; grid-template-columns: 80px 1.4fr 1fr 1fr 1fr 1fr 110px 90px; padding: 10px 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); }
+  .th { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+  
+  .table-body { display: flex; flex-direction: column; }
+  .table-row { display: grid; grid-template-columns: 80px 1.4fr 1fr 1fr 1fr 1fr 110px 90px; padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: center; transition: background 0.15s; }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: rgba(255,255,255,0.025); }
+
+  .td-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green-electric); }
+  .td-text { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .td-subtext { font-size: 12px; color: var(--text-secondary); }
+  .td-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-secondary); }
+
+  /* STATUS PILLS */
+  .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .status-pill.enviada { color: var(--enviada); background: var(--enviada-bg); border: 1px solid rgba(71,184,255,0.2); }
+  .status-pill.confirmada { color: var(--confirmada); background: var(--confirmada-bg); border: 1px solid rgba(163,255,71,0.25); }
+  .status-pill.pendiente { color: var(--pendiente); background: var(--pendiente-bg); border: 1px solid rgba(255,179,71,0.2); }
+
+  /* ACTIONS */
+  .actions-cell { display: flex; gap: 6px; justify-content: flex-end; }
+  .btn-icon { width: 28px; height: 28px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; }
+  .btn-icon:hover { border-color: var(--border-green); color: var(--green-electric); background: var(--green-dim); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: #0d1210; border: 1px solid var(--border-green); border-radius: 14px; padding: 28px; width: 420px; max-width: 90vw; box-shadow: 0 0 60px rgba(163,255,71,0.1); transform: translateY(20px); transition: transform 0.25s; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 16px; border-left: 3px solid var(--green-electric); padding-left: 10px; }
+  .modal-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .modal-row:last-of-type { border-bottom: none; }
+  .modal-key { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; align-self: center; }
+  .modal-val { color: var(--text-primary); font-size: 12px; max-width: 60%; text-align: right; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .btn-modal-close { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--text-secondary); font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+  .btn-modal-close:hover { border-color: var(--border-green); color: var(--text-primary); }
+  .btn-modal-confirm { flex: 1; background: var(--green-dim); border: 1px solid var(--border-green); color: var(--green-electric); font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+  .btn-modal-confirm:hover { background: rgba(163,255,71,0.2); }
+
+  /* TOAST */
+  .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 200; }
+  .toast { background: #0f1512; border: 1px solid var(--border-green); border-radius: 10px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(163,255,71,0.08); min-width: 260px; animation: toast-in 0.3s cubic-bezier(0.34,1.56,0.64,1); transition: opacity 0.3s, transform 0.3s; }
+  @keyframes toast-in { from { transform: translateX(60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .toast-icon { color: var(--green-electric); }
+
+  /* DESTINATIONS CONTAINER */
+  #destinations-container { display: flex; flex-direction: column; gap: 6px; }
+
+  /* ROW FADE IN */
+  .row-new { animation: fade-up 0.3s ease; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-name">
+      <span>QUANTUM</span>
+      <span class="logo-dot"></span>
+    </div>
+    <div class="logo-sub">ERP</div>
+  </div>
+  <div class="sidebar-location">
+    <span class="location-pin">◉</span>
+    MEDELLÍN, COLOMBIA
+  </div>
+  <div class="sidebar-section-label">MÓDULOS</div>
+  <nav class="nav-items">
+    <div class="nav-item open active" onclick="toggleNav(this)">
+      <span class="nav-icon">⊟</span>
+      INVENTARIO
+      <span class="nav-chevron">›</span>
+    </div>
+    <div class="subnav open">
+      <div class="subnav-item" onclick="showToast('📦 Módulo: Catálogo')">Catálogo</div>
+      <div class="subnav-item" onclick="showToast('📊 Módulo: Stock')">Stock</div>
+      <div class="subnav-item active">Central de Despachos</div>
+    </div>
+
+    <div class="nav-item" onclick="toggleNav(this)">
+      <span class="nav-icon">✦</span>
+      MANTENIMIENTO
+      <span class="nav-chevron">›</span>
+    </div>
+    <div class="subnav">
+      <div class="subnav-item" onclick="showToast('🔧 Módulo: Órdenes de Trabajo')">Órdenes de Trabajo</div>
+      <div class="subnav-item" onclick="showToast('📋 Módulo: Preventivo')">Preventivo</div>
+    </div>
+
+    <div class="nav-item" onclick="showToast('🎫 Módulo: Eventos')">
+      <span class="nav-icon">◈</span>
+      EVENTOS
+    </div>
+
+    <div class="nav-item" onclick="showToast('🗂 Módulo: Proyectos')">
+      <span class="nav-icon">⬡</span>
+      PROYECTOS
+    </div>
+
+    <div class="nav-item" onclick="showToast('📈 Módulo: Analítica')">
+      <span class="nav-icon">◎</span>
+      ANALÍTICA
+    </div>
+
+    <div class="nav-item" onclick="showToast('👥 Módulo: Usuarios')">
+      <span class="nav-icon">⊚</span>
+      USUARIOS
+    </div>
+  </nav>
+  <div class="sidebar-version">v 1.1.0</div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-breadcrumb">
+      <span>◉</span>
+      <span class="sep">PANEL ADMINISTRATIVO / INVENTARIO / CENTRAL DE DESPACHOS</span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-user" onclick="showToast('👤 Módulo de usuario corporativo')">
+      <div class="user-avatar">A</div>
+      <div class="user-info">
+        <div class="user-name">admin</div>
+        <div class="user-role">ADMINISTRATIVO</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="page-header">
+      <div class="page-title-wrap">
+        <div class="page-title-row">
+          <div class="page-icon">📦</div>
+          <h1 class="page-title">CENTRAL DE DESPACHOS</h1>
+        </div>
+        <div class="page-subtitle">Solicitud de Transporte y Programación Logística</div>
+      </div>
+      <button class="btn-new-request" onclick="resetForm()">+ Nueva Solicitud</button>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card" style="animation-delay:0.04s">
+        <div class="kpi-label">TOTAL ITEMS</div>
+        <div class="kpi-value" id="kpi-items">11</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.08s">
+        <div class="kpi-label">TOTAL TRASLADOS</div>
+        <div class="kpi-value" id="kpi-traslados">2210</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.12s">
+        <div class="kpi-label">CONFIRMED</div>
+        <div class="kpi-value" id="kpi-confirmed">2</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.16s">
+        <div class="kpi-label">ON BALLOT</div>
+        <div class="kpi-value" id="kpi-ballot">0</div>
+      </div>
+      <div class="kpi-card highlight" style="animation-delay:0.20s">
+        <div class="kpi-label">SOLICITUDES ENVIADAS</div>
+        <div class="kpi-value" id="kpi-enviadas">14</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.24s">
+        <div class="kpi-label">TRANSPORTISTAS DISP.</div>
+        <div class="kpi-value" id="kpi-transportistas">8</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.28s">
+        <div class="kpi-label">RECOGIDAS PENDIENTES</div>
+        <div class="kpi-value" id="kpi-recogidas">3</div>
+      </div>
+      <div class="kpi-card" style="animation-delay:0.32s">
+        <div class="kpi-label">PENDIENTE CONFIRMACIÓN</div>
+        <div class="kpi-value" id="kpi-pendientes" style="color: #ffb347;">1</div>
+      </div>
+    </div>
+
+    <div class="workspace-layout">
+      
+      <div class="panel-card">
+        <div class="panel-title">Formulario de Solicitud de Camión</div>
+        <form class="form-grid" id="dispatch-form" onsubmit="event.preventDefault(); openConfirmModal();">
+          
+          <div class="form-section-title">Datos Generales</div>
+          
+          <div class="field-group">
+            <label>Nombre del Evento</label>
+            <select class="select-ctrl" id="form-evento">
+              <option>Gira Nacional Artística 2024</option>
+              <option>Foro Corporativo Bancolombia 2026</option>
+              <option>Asamblea Anual Bavaria</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Tipo de Carga</label>
+            <input type="text" class="input-ctrl" value="Equipos de Sonido y Luces" id="form-carga" required>
+          </div>
+
+          <div class="field-group">
+            <label>Nivel de Prioridad</label>
+            <select class="select-ctrl" id="form-prioridad">
+              <option>Alta</option>
+              <option>Media</option>
+              <option>Baja</option>
+            </select>
+          </div>
+
+          <div class="form-section-title">Datos de Recogida y Destino</div>
+
+          <div class="field-group">
+            <label>Fecha de Recogida</label>
+            <input type="date" class="input-ctrl" id="form-fecha" value="2024-01-15" required>
+          </div>
+
+          <div class="field-group">
+            <label>Ubicación de Recogida</label>
+            <input type="text" class="input-ctrl" value="CEDI Medellín (Calle 44 #52-16)" id="form-origen" required>
+          </div>
+
+          <div class="field-group full-width">
+            <label>Ubicaciones de Destino</label>
+            <div id="destinations-container">
+              <div class="location-input-row" data-dest>
+                <input type="text" class="input-ctrl" style="flex:1" value="Estadio El Campín (Bogotá)" placeholder="Ingresa destino...">
+                <button type="button" class="btn-action-small" onclick="removeDest(this)" title="Eliminar destino">✕</button>
+              </div>
+              <div class="location-input-row" data-dest>
+                <input type="text" class="input-ctrl" style="flex:1" value="Teatro Metro (Barranquilla)" placeholder="Ingresa destino...">
+                <button type="button" class="btn-action-small" onclick="removeDest(this)" title="Eliminar destino">✕</button>
+              </div>
+            </div>
+            <div class="location-input-row">
+              <button type="button" class="btn-action-small btn-add-dest" style="width:100%" onclick="addDest()">+ AGREGAR DESTINO COMPLEMENTARIO</button>
+            </div>
+          </div>
+
+          <div class="form-section-title">Empresa Transportadora y Costo</div>
+
+          <div class="field-group">
+            <label>Transportadora Solicitada</label>
+            <select class="select-ctrl" id="form-carrier" onchange="updateCost(this.value)">
+              <option value="expreso">Transportes Expreso</option>
+              <option value="avanzada">Logística Avanzada</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Costo de Transporte Estimado</label>
+            <input type="text" class="input-ctrl" id="estimated-cost" value="$1.2M (MED-BOG) / $1.8M (MED-BAQ)" readonly style="color: var(--text-secondary); background: rgba(0,0,0,0.5)">
+          </div>
+
+          <div class="form-section-title">Correo de Confirmación</div>
+
+          <div class="field-group full-width">
+            <label class="checkbox-label">
+              <input type="checkbox" id="form-send-mail" checked> Enviar Correo a Transportadora
+            </label>
+          </div>
+
+          <div class="field-group full-width">
+            <textarea class="textarea-ctrl" rows="3" id="form-message" placeholder="Mensaje Opcional para la Transportadora..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit-form">Enviar Solicitud por Correo</button>
+        </form>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title">Tabla de Costos a Ciudades Principales</div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>CIUDAD DESTINO</th>
+              <th>PRECIO BASE (MED)</th>
+              <th>DURACIÓN EST.</th>
+              <th>TRANSPORTADORA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bogotá</td>
+              <td class="highlight-cell">$1,150,000</td>
+              <td>12h</td>
+              <td>T. Expreso</td>
+            </tr>
+            <tr>
+              <td>Barranquilla</td>
+              <td class="highlight-cell">$1,650,000</td>
+              <td>18h</td>
+              <td>Log. Avanzada</td>
+            </tr>
+            <tr>
+              <td>Cali</td>
+              <td class="highlight-cell">$950,000</td>
+              <td>10h</td>
+              <td>T. Expreso</td>
+            </tr>
+            <tr>
+              <td>Cartagena</td>
+              <td class="highlight-cell">$1,800,000</td>
+              <td>20h</td>
+              <td>Log. Avanzada</td>
+            </tr>
+            <tr>
+              <td>Bucaramanga</td>
+              <td class="highlight-cell">$780,000</td>
+              <td>8h</td>
+              <td>T. Expreso</td>
+            </tr>
+            <tr>
+              <td>Pereira</td>
+              <td class="highlight-cell">$550,000</td>
+              <td>4h</td>
+              <td>T. Expreso</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="panel-card" style="padding: 14px 20px 4px 20px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div class="panel-title" style="margin-bottom: 12px;">Tabla de Resumen de Solicitudes Recientes</div>
+        <div style="display:flex; gap:6px; margin-bottom:12px;">
+          <button class="btn-action-small" onclick="filterTable('all')" id="filter-all" style="width:auto; padding:0 10px; font-size:9px; font-family:'JetBrains Mono'; letter-spacing:0.05em; color: var(--green-electric); border-color: var(--border-green);">TODAS</button>
+          <button class="btn-action-small" onclick="filterTable('enviada')" id="filter-enviada" style="width:auto; padding:0 10px; font-size:9px; font-family:'JetBrains Mono'; letter-spacing:0.05em;">ENVIADAS</button>
+          <button class="btn-action-small" onclick="filterTable('confirmada')" id="filter-confirmada" style="width:auto; padding:0 10px; font-size:9px; font-family:'JetBrains Mono'; letter-spacing:0.05em;">CONFIRMADAS</button>
+          <button class="btn-action-small" onclick="filterTable('pendiente')" id="filter-pendiente" style="width:auto; padding:0 10px; font-size:9px; font-family:'JetBrains Mono'; letter-spacing:0.05em;">PENDIENTES</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="th">ID SOL.</div>
+        <div class="th">EVENTO</div>
+        <div class="th">ORIGEN</div>
+        <div class="th">DESTINO</div>
+        <div class="th">FECHA RECOGIDA</div>
+        <div class="th">TRANSPORTADORA</div>
+        <div class="th">ESTADO</div>
+        <div class="th" style="text-align: right;">ACCIONES</div>
+      </div>
+      <div class="table-body" id="recent-table-body">
+        <!-- Rows are injected by JS -->
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-title">Confirmar Solicitud</div>
+    <div id="modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-close" onclick="closeModal()">Cancelar</button>
+      <button class="btn-modal-confirm" onclick="sendDispatch()">Confirmar y Enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal">
+    <div class="modal-title">Detalle de Solicitud</div>
+    <div id="view-modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-close" onclick="closeViewModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+  // ── STATE ──
+  let requestCounter = 0;
+  let currentFilter = 'all';
+
+  const requests = [
+    { id: 'Req-001', evento: 'Gira Nacional 2024', origen: 'Medellín', destino: 'Bogotá', fecha: '15/01/24', carrier: 'Expreso', status: 'enviada', carga: 'Equipos de Sonido', prioridad: 'Alta' },
+    { id: 'Req-002', evento: 'Gira Nacional 2024', origen: 'Medellín', destino: 'Barranquilla', fecha: '15/01/24', carrier: 'Expreso', status: 'confirmada', carga: 'Equipos de Iluminación', prioridad: 'Alta' },
+    { id: 'Req-003', evento: 'Foro Bancolombia 2026', origen: 'Bogotá', destino: 'Cali', fecha: '20/03/26', carrier: 'Log. Avanzada', status: 'pendiente', carga: 'Mobiliario Corporativo', prioridad: 'Media' },
+  ];
+
+  // ── RENDER TABLE ──
+  function renderTable(filter) {
+    const tbody = document.getElementById('recent-table-body');
+    tbody.innerHTML = '';
+    const filtered = filter === 'all' ? requests : requests.filter(r => r.status === filter);
+    
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<div style="padding: 28px; text-align:center; font-family:'JetBrains Mono'; font-size:11px; color: var(--text-muted); letter-spacing:0.05em;">— SIN REGISTROS —</div>`;
+      return;
+    }
+
+    filtered.forEach((req, i) => {
+      const row = document.createElement('div');
+      row.className = 'table-row';
+      row.dataset.status = req.status;
+      row.innerHTML = `
+        <div class="td-code">${req.id}</div>
+        <div class="td-text" style="font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${req.evento}</div>
+        <div class="td-subtext">${req.origen}</div>
+        <div class="td-subtext">${req.destino}</div>
+        <div class="td-date">${req.fecha}</div>
+        <div class="td-text" style="font-size:12px;">${req.carrier}</div>
+        <div><span class="status-pill ${req.status}">${req.status.charAt(0).toUpperCase() + req.status.slice(1)}</span></div>
+        <div class="actions-cell">
+          <button class="btn-icon" title="Ver detalle" onclick="viewRequest(${requests.indexOf(req)})">👁</button>
+          <button class="btn-icon" title="Editar" onclick="editRequest(${requests.indexOf(req)})">✏</button>
+          <button class="btn-icon" title="Reenviar correo" onclick="showToast('✉ Correo reenviado para ${req.id}')">✉</button>
+        </div>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function filterTable(filter) {
+    currentFilter = filter;
+    ['all','enviada','confirmada','pendiente'].forEach(f => {
+      const btn = document.getElementById('filter-' + f);
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    });
+    const active = document.getElementById('filter-' + filter);
+    active.style.color = 'var(--green-electric)';
+    active.style.borderColor = 'var(--border-green)';
+    renderTable(filter);
+  }
+
+  // ── FORM ──
+  function updateCost(carrier) {
+    const costInput = document.getElementById('estimated-cost');
+    if (carrier === 'expreso') {
+      costInput.value = "$1.2M (MED-BOG) / $1.8M (MED-BAQ)";
+    } else {
+      costInput.value = "$1.4M (MED-BOG) / $1.9M (MED-BAQ)";
+    }
+    showToast('🔄 Tarifas actualizadas según operador asignado.');
+  }
+
+  function addDest() {
+    const container = document.getElementById('destinations-container');
+    const row = document.createElement('div');
+    row.className = 'location-input-row row-new';
+    row.setAttribute('data-dest', '');
+    row.innerHTML = `
+      <input type="text" class="input-ctrl" style="flex:1" placeholder="Ingresa destino...">
+      <button type="button" class="btn-action-small" onclick="removeDest(this)" title="Eliminar destino">✕</button>
+    `;
+    container.appendChild(row);
+    row.querySelector('input').focus();
+  }
+
+  function removeDest(btn) {
+    const dests = document.querySelectorAll('[data-dest]');
+    if (dests.length <= 1) { showToast('⚠️ Debe haber al menos un destino.'); return; }
+    btn.closest('[data-dest]').remove();
+  }
+
+  function getFormData() {
+    const dests = [...document.querySelectorAll('[data-dest] input')].map(i => i.value).filter(Boolean);
+    return {
+      evento: document.getElementById('form-evento').value,
+      carga: document.getElementById('form-carga').value,
+      prioridad: document.getElementById('form-prioridad').value,
+      fecha: document.getElementById('form-fecha').value,
+      origen: document.getElementById('form-origen').value,
+      destinos: dests,
+      carrier: document.getElementById('form-carrier').value === 'expreso' ? 'Transportes Expreso' : 'Logística Avanzada',
+      cost: document.getElementById('estimated-cost').value,
+      sendMail: document.getElementById('form-send-mail').checked,
+      message: document.getElementById('form-message').value,
+    };
+  }
+
+  function openConfirmModal() {
+    const d = getFormData();
+    if (!d.carga || !d.origen || d.destinos.length === 0) {
+      showToast('⚠️ Por favor completa todos los campos requeridos.');
+      return;
+    }
+    const content = document.getElementById('modal-content');
+    content.innerHTML = `
+      <div class="modal-row"><span class="modal-key">Evento</span><span class="modal-val">${d.evento}</span></div>
+      <div class="modal-row"><span class="modal-key">Carga</span><span class="modal-val">${d.carga}</span></div>
+      <div class="modal-row"><span class="modal-key">Prioridad</span><span class="modal-val">${d.prioridad}</span></div>
+      <div class="modal-row"><span class="modal-key">Origen</span><span class="modal-val">${d.origen}</span></div>
+      <div class="modal-row"><span class="modal-key">Destinos</span><span class="modal-val">${d.destinos.join(' / ')}</span></div>
+      <div class="modal-row"><span class="modal-key">Fecha Recogida</span><span class="modal-val">${d.fecha}</span></div>
+      <div class="modal-row"><span class="modal-key">Transportadora</span><span class="modal-val">${d.carrier}</span></div>
+      <div class="modal-row"><span class="modal-key">Costo Estimado</span><span class="modal-val" style="color:var(--green-electric)">${d.cost}</span></div>
+      <div class="modal-row"><span class="modal-key">Enviar Correo</span><span class="modal-val">${d.sendMail ? 'Sí' : 'No'}</span></div>
+    `;
+    document.getElementById('confirmModal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('confirmModal').classList.remove('open');
+  }
+
+  function sendDispatch() {
+    closeModal();
+    requestCounter++;
+    const d = getFormData();
+    const today = new Date();
+    const dateStr = `${today.getDate().toString().padStart(2,'0')}/${(today.getMonth()+1).toString().padStart(2,'0')}/${today.getFullYear().toString().slice(-2)}`;
+    const newId = `Req-${String(requests.length + 1).padStart(3,'0')}`;
+
+    requests.unshift({
+      id: newId,
+      evento: d.evento.slice(0, 20),
+      origen: d.origen.split(' ')[0],
+      destino: d.destinos[0].split(' ')[0],
+      fecha: dateStr,
+      carrier: d.carrier.split(' ')[0],
+      status: 'enviada',
+      carga: d.carga,
+      prioridad: d.prioridad,
+    });
+
+    // Update KPIs
+    const envEl = document.getElementById('kpi-enviadas');
+    envEl.textContent = parseInt(envEl.textContent) + 1;
+    const recEl = document.getElementById('kpi-recogidas');
+    recEl.textContent = parseInt(recEl.textContent) + 1;
+
+    renderTable(currentFilter);
+    showToast(`📥 Solicitud ${newId} enviada exitosamente.`);
+    if (d.sendMail) showToast(`✉ Correo enviado a ${d.carrier}`);
+  }
+
+  function resetForm() {
+    document.getElementById('dispatch-form').reset();
+    // Restore default date
+    document.getElementById('form-fecha').value = new Date().toISOString().split('T')[0];
+    document.getElementById('estimated-cost').value = '$1.2M (MED-BOG) / $1.8M (MED-BAQ)';
+    // Reset destinations to one blank
+    const container = document.getElementById('destinations-container');
+    container.innerHTML = `
+      <div class="location-input-row" data-dest>
+        <input type="text" class="input-ctrl" style="flex:1" placeholder="Ingresa destino...">
+        <button type="button" class="btn-action-small" onclick="removeDest(this)" title="Eliminar destino">✕</button>
+      </div>
+    `;
+    showToast('⚡ Formulario listo para nueva solicitud.');
+  }
+
+  function viewRequest(idx) {
+    const req = requests[idx];
+    const content = document.getElementById('view-modal-content');
+    content.innerHTML = `
+      <div class="modal-row"><span class="modal-key">ID</span><span class="modal-val" style="color:var(--green-electric); font-family:'JetBrains Mono'; font-size:12px">${req.id}</span></div>
+      <div class="modal-row"><span class="modal-key">Evento</span><span class="modal-val">${req.evento}</span></div>
+      <div class="modal-row"><span class="modal-key">Carga</span><span class="modal-val">${req.carga || '—'}</span></div>
+      <div class="modal-row"><span class="modal-key">Prioridad</span><span class="modal-val">${req.prioridad || '—'}</span></div>
+      <div class="modal-row"><span class="modal-key">Origen</span><span class="modal-val">${req.origen}</span></div>
+      <div class="modal-row"><span class="modal-key">Destino</span><span class="modal-val">${req.destino}</span></div>
+      <div class="modal-row"><span class="modal-key">Fecha Recogida</span><span class="modal-val">${req.fecha}</span></div>
+      <div class="modal-row"><span class="modal-key">Transportadora</span><span class="modal-val">${req.carrier}</span></div>
+      <div class="modal-row"><span class="modal-key">Estado</span><span class="modal-val"><span class="status-pill ${req.status}">${req.status.charAt(0).toUpperCase() + req.status.slice(1)}</span></span></div>
+    `;
+    document.getElementById('viewModal').classList.add('open');
+  }
+
+  function closeViewModal() {
+    document.getElementById('viewModal').classList.remove('open');
+  }
+
+  function editRequest(idx) {
+    const req = requests[idx];
+    // Populate form
+    const eventoSel = document.getElementById('form-evento');
+    for (let i = 0; i < eventoSel.options.length; i++) {
+      if (eventoSel.options[i].text.includes(req.evento.slice(0,8))) {
+        eventoSel.selectedIndex = i; break;
+      }
+    }
+    if (req.carga) document.getElementById('form-carga').value = req.carga;
+    document.getElementById('form-origen').value = req.origen;
+    // Set destination
+    const container = document.getElementById('destinations-container');
+    container.innerHTML = `
+      <div class="location-input-row" data-dest>
+        <input type="text" class="input-ctrl" style="flex:1" value="${req.destino}">
+        <button type="button" class="btn-action-small" onclick="removeDest(this)" title="Eliminar destino">✕</button>
+      </div>
+    `;
+    showToast(`✏ Editando ${req.id} — modifica y reenvía.`);
+    document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── NAV TOGGLE ──
+  function toggleNav(el) {
+    const subnav = el.nextElementSibling;
+    if (!subnav || !subnav.classList.contains('subnav')) return;
+    const isOpen = subnav.classList.contains('open');
+    el.classList.toggle('open', !isOpen);
+    subnav.classList.toggle('open', !isOpen);
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const container = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<span class="toast-icon">◉</span><span>${msg}</span>`;
+    container.appendChild(t);
+    setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(60px)';
+      setTimeout(() => t.remove(), 300);
+    }, 3000);
+  }
+
+  // ── CLOSE MODALS ON OVERLAY CLICK ──
+  document.getElementById('confirmModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('viewModal').addEventListener('click', function(e) {
+    if (e.target === this) closeViewModal();
+  });
+
+  // ── INIT ──
+  renderTable('all');
+</script>
+</body>
+</html>

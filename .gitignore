@@ -1,0 +1,107 @@
+# ── Environment & secrets ────────────────────────────────────────────────────
+.env
+.env.*
+.env.local
+.env.production
+.env.staging
+*.local
+infra/secrets/
+secrets/
+**/secrets/**
+**/*.pem
+**/*.key
+**/*.p12
+**/*.jks
+**/*.keystore
+**/credentials*.json
+**/service-account*.json
+# Google OAuth client secrets
+client_secret_*.json
+**/client_secret_*.json
+# GCP service account keys (pattern: <project>-<hex>.json)
+quantum-by-brandex-*.json
+**/quantum-by-brandex-*.json
+
+# ── Database dumps & import artifacts ────────────────────────────────────────
+*.dump
+*.dump.zip
+*.dump.gz
+dump.sql
+dump.txt
+**/dump*.sql
+**/dump*.txt
+*_import_results.json
+import_products.sql
+celebrate_import.py
+
+# ── Java / Spring Boot / Gradle ──────────────────────────────────────────────
+.gradle/
+**/build/
+**/*.class
+**/*.jar
+**/*.war
+out/
+**/.classpath
+**/.project
+**/.settings/
+**/*.iml
+
+# ── Node / NestJS / Vite ─────────────────────────────────────────────────────
+node_modules/
+dist/
+*.js.map
+.npm/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── Logs & reports ───────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+build_output.txt
+*.heapsnapshot
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+.dockerignore
+
+# ── Testing & coverage ───────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+test-results/
