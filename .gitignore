@@ -21,6 +21,7 @@ client_secret_*.json
 # GCP service account keys (pattern: <project>-<hex>.json)
 quantum-by-brandex-*.json
 **/quantum-by-brandex-*.json
+frontend
 
 # ── Database dumps & import artifacts ────────────────────────────────────────
 *.dump
@@ -105,3 +106,13 @@ coverage/
 .nyc_output/
 *.lcov
 test-results/
+
+# ── Repo raíz — carpetas excluidas del tracking ───────────────────────────────
+Frontend/
+.claude/
+.team/
+scripts/
+HTML's/
+CHANGELOG.md
+quantum-api-tester.html
+*.html
