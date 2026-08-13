@@ -109,6 +109,12 @@ test-results/
 
 # ── Repo raíz — carpetas excluidas del tracking ───────────────────────────────
 Frontend/
+.claude/
+.team/
+scripts/
+HTML's/
+CHANGELOG.md
+quantum-api-tester.html
 
 # ── Archivos sensibles locales (nunca subir) ──────────────────────────────────
 dump.sql
