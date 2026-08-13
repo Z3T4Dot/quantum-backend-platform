@@ -3,7 +3,7 @@
 **Versión:** 1.0  
 **Fecha:** 2026-08-04  
 **Estado:** Especificación oficial  
-**Clasificación:** Referencia técnica interna — Brandex Global
+**Clasificación:** Referencia técnica interna
 
 > Este documento define el lenguaje oficial de declaración de módulos de Quantum. Un Business Module se declara enteramente mediante este formato. No hay código, no hay implementación: solo la declaración. El Business Runtime la lee, la valida y construye el pipeline de ejecución.
 

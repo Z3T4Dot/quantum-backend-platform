@@ -21,6 +21,7 @@ client_secret_*.json
 # GCP service account keys (pattern: <project>-<hex>.json)
 quantum-by-brandex-*.json
 **/quantum-by-brandex-*.json
+Frontend
 frontend
 
 # ── Database dumps & import artifacts ────────────────────────────────────────

@@ -3,7 +3,7 @@
 **Versión:** 3.3  
 **Fecha:** 2026-08-04  
 **Estado:** Documento oficial de arquitectura  
-**Clasificación:** Referencia técnica interna — Brandex Global
+**Clasificación:** Referencia técnica interna
 
 ---
 
@@ -11,7 +11,7 @@
 
 **PARTE I — EL SISTEMA**
 1. [Filosofía del Sistema](#1-filosofía-del-sistema)
-2. [Modelo Operacional de Brandex](#2-modelo-operacional-de-brandex)
+2. [Modelo Operacional](#2-modelo-operacional)
 3. [Principios Arquitectónicos](#3-principios-arquitectónicos)
    - [P-DOM-001 — Propiedad exclusiva del modelo de datos](#p-dom-001--propiedad-exclusiva-del-modelo-de-datos)
    - [P-SEC-001 — Autorización siempre desde la fuente de verdad](#p-sec-001--autorización-siempre-desde-la-fuente-de-verdad)
@@ -84,17 +84,17 @@
 
 ## 1. Filosofía del Sistema
 
-### Quantum ERP no es software. Es el sistema operativo de Brandex.
+### Quantum ERP no es software. Es el sistema operativo.
 
-Un ERP genérico asume que cualquier empresa puede adaptarse a sus procesos. SAP, Odoo y Dynamics están construidos sobre ese supuesto. Brandex no es cualquier empresa. Brandex produce experiencias: eventos corporativos, instalaciones de marca, activaciones, experiencias de campo. Su operación es creativa, dinámica y orientada a proyectos únicos. Ningún ERP de mercado modela correctamente esa realidad.
+Un ERP genérico asume que cualquier empresa puede adaptarse a sus procesos. SAP, Odoo y Dynamics están construidos sobre ese supuesto. Ningún ERP de mercado modela correctamente esa realidad.
 
-Quantum ERP nace de una pregunta diferente: ¿cómo se digitalizan exactamente las operaciones de Brandex, sin compromisos, sin adaptaciones artificiales, sin que el software obligue al negocio a cambiar su manera de operar?
+Quantum ERP nace de una pregunta diferente: ¿cómo se digitalizan exactamente las operaciones de una empresa, sin compromisos, sin adaptaciones artificiales, sin que el software obligue al negocio a cambiar su manera de operar?
 
 La respuesta a esa pregunta es este sistema.
 
 ### Qué problema resuelve
 
-Brandex opera con múltiples departamentos que trabajan en simultáneo sobre los mismos proyectos, con activos físicos compartidos, con proveedores externos, con clientes que necesitan visibilidad, y con presupuestos que se deben controlar en tiempo real. Hasta ahora, esa coordinación ocurre a través de emails, hojas de cálculo, mensajes de WhatsApp y conversaciones informales. El conocimiento sobre un proyecto vive en la cabeza de las personas, no en el sistema.
+Las empresas operan con múltiples departamentos que trabajan en simultáneo sobre los mismos proyectos, con activos físicos compartidos, con proveedores externos, con clientes que necesitan visibilidad, y con presupuestos que se deben controlar en tiempo real. Hasta ahora, esa coordinación ocurre a través de emails, hojas de cálculo, mensajes de WhatsApp y conversaciones informales. El conocimiento sobre un proyecto vive en la cabeza de las personas, no en el sistema.
 
 Quantum ERP resuelve ese problema: centraliza el conocimiento operacional en una única fuente de verdad, coordina los flujos entre departamentos, y da visibilidad completa sobre el estado de cada proyecto en cada momento.
 
@@ -106,9 +106,9 @@ Single Source of Truth no es un principio técnico. Es un compromiso con la real
 
 ### Por qué no buscamos un ERP genérico
 
-Los ERP genéricos modelan procesos estándar de industria. Brandex tiene procesos propios que no tienen equivalente estándar: el ciclo de vida de un proyecto de producción de eventos no es igual al de un proyecto de manufactura, ni al de un proyecto de consultoría. La ficha de un activo como una cabina de DJ no es igual a la de un inventario de repuestos industriales. El flujo de aprobación creativa de un concepto de activación no existe en ningún módulo de SAP.
+Los ERP genéricos modelan procesos estándar de industria. Las empresas tienen procesos propios que no tienen equivalente estándar: el ciclo de vida de un proyecto de producción de eventos no es igual al de un proyecto de manufactura, ni al de un proyecto de consultoría. La ficha de un activo como una cabina de DJ no es igual a la de un inventario de repuestos industriales. El flujo de aprobación creativa de un concepto de activación no existe en ningún módulo de SAP.
 
-Cualquier intento de usar un ERP genérico termina en personalizaciones costosas que crean deuda técnica inmediata. Quantum ERP está construido desde cero sobre el modelo real del negocio de Brandex.
+Cualquier intento de usar un ERP genérico termina en personalizaciones costosas que crean deuda técnica inmediata. Quantum ERP está construido desde cero sobre el modelo real del negocio de una empresa lider en eventos.
 
 ### Los negocios no se programan: se ensamblan
 
@@ -162,9 +162,9 @@ Cuando los cuatro funcionen: verdad arquitectónica demostrable, auditable y rep
 
 ### Construido para durar
 
-La arquitectura de este sistema está diseñada para que, si Brandex duplica su tamaño, abre nuevas líneas de negocio o incorpora nuevos departamentos, la evolución consista principalmente en extender dominios existentes, no en rediseñar la arquitectura. Los departamentos organizacionales pueden cambiar. Los dominios del negocio permanecen.
+La arquitectura de este sistema está diseñada para que, si una empresa duplica su tamaño, abre nuevas líneas de negocio o incorpora nuevos departamentos, la evolución consista principalmente en extender dominios existentes, no en rediseñar la arquitectura. Los departamentos organizacionales pueden cambiar. Los dominios del negocio permanecen.
 
-Si Brandex abre una nueva línea de negocio mañana, ese cambio se manifiesta como una nueva configuración del sistema, no como una reescritura.
+Si una empresa abre una nueva línea de negocio mañana, ese cambio se manifiesta como una nueva configuración del sistema, no como una reescritura.
 
 ### Principio rector
 
@@ -172,7 +172,7 @@ Si Brandex abre una nueva línea de negocio mañana, ese cambio se manifiesta co
 
 ---
 
-## 2. Modelo Operacional de Brandex
+## 2. Modelo Operacional
 
 Este capítulo describe cómo funciona realmente el negocio, independientemente de la tecnología. Es la base sobre la cual se construye el dominio.
 
@@ -196,7 +196,7 @@ Este capítulo describe cómo funciona realmente el negocio, independientemente 
 
 ### Actores del sistema
 
-**Actores internos (usuarios de Brandex):**
+**Actores internos (usuarios de Empresa):**
 
 | Actor | Rol en el sistema |
 |---|---|
@@ -221,7 +221,7 @@ Este capítulo describe cómo funciona realmente el negocio, independientemente 
 
 Antes de cualquier decisión de dominio, es necesario acordar el significado de las palabras del negocio:
 
-| Término | Definición en Brandex |
+| Término | Definición |
 |---|---|
 | **Lead** | Oportunidad comercial en etapa de exploración, antes de comprometerse a una propuesta formal |
 | **Deal** | Oportunidad en etapa avanzada, con propuesta enviada y negociación activa |
@@ -229,7 +229,7 @@ Antes de cualquier decisión de dominio, es necesario acordar el significado de 
 | **Proyecto** | La entidad central del sistema. Agrupa todo el trabajo necesario para ejecutar un evento o experiencia |
 | **Ficha Maestra** | Vista unificada del proyecto que consolida información de todos los departamentos |
 | **Orden de Trabajo** | Solicitud de un departamento específico para ejecutar su parte dentro de un proyecto |
-| **Activo** | Elemento físico propiedad de Brandex (estructura, pantalla, mueble, vehículo, etc.) |
+| **Activo** | Elemento físico de propiedad (estructura, pantalla, mueble, vehículo, etc.) |
 | **Entidad Dinámica** | Elemento catalogado con atributos variables (vehículo, speaker, venue, consumible) |
 | **Recurso Externo** | Servicio o bien contratado a un proveedor para un proyecto específico |
 | **Dispatch** | Operación de transporte y entrega de activos hacia o desde un punto de evento |
@@ -1070,7 +1070,7 @@ La API de `project-service` es agnóstica al Engine que la llama. No existe un e
 
 ## 4. Modelo de Dominio
 
-El modelo de dominio describe las entidades del negocio, sus atributos esenciales y sus relaciones. No son tablas de base de datos. Son los objetos conceptuales que representan la realidad operacional de Brandex.
+El modelo de dominio describe las entidades del negocio, sus atributos esenciales y sus relaciones. No son tablas de base de datos. Son los objetos conceptuales que representan la realidad operacional.
 
 ### Entidades principales
 
@@ -1078,7 +1078,7 @@ El modelo de dominio describe las entidades del negocio, sus atributos esenciale
 
 **COMPANY** — Empresa cliente o proveedora
 
-Una empresa del mundo real que tiene relación comercial con Brandex. Puede ser cliente (genera proyectos), proveedor (ofrece recursos para proyectos), o ambos. Es una entidad de referencia compartida entre el CRM y el Marketplace, con perspectivas distintas en cada dominio.
+Una empresa del mundo real que tiene relación comercial. Puede ser cliente (genera proyectos), proveedor (ofrece recursos para proyectos), o ambos. Es una entidad de referencia compartida entre el CRM y el Marketplace, con perspectivas distintas en cada dominio.
 
 Atributos esenciales: identidad única, nombre legal, tipo (cliente / proveedor / ambos), información de contacto, documentación legal, historial de relación.
 
@@ -1098,7 +1098,7 @@ Una oportunidad de negocio en exploración. Existe solo en el dominio comercial.
 
 **DEAL** — Oportunidad comprometida
 
-Un Lead que ha avanzado a propuesta formal y negociación activa. Tiene un valor acordado, fechas de evento, un brief preliminar y departamentos de Brandex involucrados. Un Deal ganado es el origen de todo Proyecto.
+Un Lead que ha avanzado a propuesta formal y negociación activa. Tiene un valor acordado, fechas de evento, un brief preliminar y departamentos involucrados. Un Deal ganado es el origen de todo Proyecto.
 
 ---
 
@@ -1134,13 +1134,13 @@ Relaciones: pertenece a un Proyecto, tiene un Departamento responsable, contiene
 
 **ORDER LINE** — Línea de una orden
 
-Un requerimiento específico dentro de una Work Order. Puede referenciar: un Activo físico propio de Brandex, una Entidad Dinámica (vehículo, equipo de sonido), o un Recurso Externo contratado vía Marketplace. Tiene estado propio: pendiente, reservado, confirmado, despachado, retornado.
+Un requerimiento específico dentro de una Work Order. Puede referenciar: un Activo físico propio, una Entidad Dinámica (vehículo, equipo de sonido), o un Recurso Externo contratado vía Marketplace. Tiene estado propio: pendiente, reservado, confirmado, despachado, retornado.
 
 ---
 
 **ASSET** — Activo físico
 
-Un elemento físico propiedad de Brandex: estructura de escenario, pantalla LED, mueble, vehículo de transporte. Tiene identificación única, estado (disponible, en uso, en mantenimiento, dado de baja) y un historial de asignaciones y mantenimiento.
+Un elemento físico propiedad: estructura de escenario, pantalla LED, mueble, vehículo de transporte. Tiene identificación única, estado (disponible, en uso, en mantenimiento, dado de baja) y un historial de asignaciones y mantenimiento.
 
 Diferencia con Entidad Dinámica: los Activos son elementos catalogados con propiedades fijas y trazabilidad de unidades físicas individuales. Las Entidades Dinámicas son categorías con atributos configurables.
 
@@ -1160,7 +1160,7 @@ Un servicio o bien contratado a un proveedor para un proyecto específico. Un DJ
 
 **CONTRACT** — Contrato con proveedor
 
-El acuerdo formal entre Brandex y un proveedor externo para proveer un recurso específico para un proyecto. Tiene monto, términos de pago, fechas y estado.
+El acuerdo formal y un proveedor externo para proveer un recurso específico para un proyecto. Tiene monto, términos de pago, fechas y estado.
 
 ---
 
@@ -1190,7 +1190,7 @@ Un archivo (imagen, PDF, modelo 3D, plano, contrato) asociado a cualquier entida
 
 **DEPARTMENT** — Unidad organizacional
 
-Un departamento de Brandex que participa en la ejecución de proyectos. Los departamentos son configuración, no código. Pueden cambiar su nombre, su código, sus módulos activos, sin modificar el software.
+Un departamento que participa en la ejecución de proyectos. Los departamentos son configuración, no código. Pueden cambiar su nombre, su código, sus módulos activos, sin modificar el software.
 
 ---
 
@@ -1385,7 +1385,7 @@ En Domain-Driven Design, un Aggregate Root es la entidad que:
 - Es el punto de entrada para todas las operaciones sobre ese agregado
 - Publica los eventos que el resto del sistema consume
 
-El Proyecto es el Aggregate Root de Quantum ERP por una razón de negocio, no técnica: **cada departamento de Brandex existe para servir a un proyecto**. No existe una orden de trabajo que no sea de un proyecto. No existe una reserva de activo que no sea para un proyecto. No existe un costo que no pertenezca a un proyecto.
+El Proyecto es el Aggregate Root de Quantum ERP por una razón de negocio, no técnica: **cada departamento existe para servir a un proyecto**. No existe una orden de trabajo que no sea de un proyecto. No existe una reserva de activo que no sea para un proyecto. No existe un costo que no pertenezca a un proyecto.
 
 ### La Ficha Maestra del Proyecto
 
@@ -2208,7 +2208,7 @@ La tecnología de cada servicio se selecciona según la naturaleza de su dominio
 
 **Eventos que consume:** `OrderLineExternalRequested` (para iniciar el proceso de contratación).
 
-**Lo que nunca debe hacer:** Gestionar activos propios de Brandex, crear proyectos, ni procesar pagos al cliente.
+**Lo que nunca debe hacer:** Gestionar activos propios, crear proyectos, ni procesar pagos al cliente.
 
 **Nota sobre implementación:** A la escala actual del sistema, marketplace-service puede comenzar como un módulo dentro de operations-service, con una separación clara de responsabilidades que permita extraerlo más adelante. La decisión de implementarlo como servicio independiente desde el inicio debe estar justificada por la complejidad operacional del proceso de contratación. Ver ADR-009.
 
@@ -3475,4 +3475,4 @@ Las fases 0–4 definidas antes de formalizar la arquitectura de Engines describ
 
 *Este documento es la referencia arquitectónica oficial del proyecto. Toda decisión de diseño tomada durante el desarrollo debe ser consistente con los principios, el modelo de dominio y las decisiones (ADRs) aquí registrados. Cualquier excepción requiere un nuevo ADR que justifique técnicamente el desvío.*
 
-*Versión 3.0 — Quantum ERP — Brandex Global — 2026-08-03*
+*Versión 3.0 — Quantum ERP — 2026-08-03*

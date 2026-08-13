@@ -1,6 +1,6 @@
-# Quantum ERP — Brandex Rental Platform
+# Quantum ERP — Rental Platform
 
-Sistema de gestión empresarial para la operación de eventos, alquiler de activos, logística y CRM comercial de **Brandex Global**. Arquitectura de microservicios con frontend React y backend mixto (Kotlin/Spring Boot + NestJS).
+Sistema de gestión empresarial para la operación de eventos, alquiler de activos, logística y CRM comercial. Arquitectura de microservicios con frontend React y backend mixto (Kotlin/Spring Boot + NestJS).
 
 ---
 
@@ -123,7 +123,7 @@ Sistema de gestión empresarial para la operación de eventos, alquiler de activ
 - Push notifications (Firebase)
 - Kafka como bus de eventos para todos los tipos de notificación
 
-### 💱 Brandex Currency (BX)
+### 💱 Currency (BX)
 - Wallet de puntos BX por usuario
 - Asignación mensual automática (10 BX default)
 - Ledger de transacciones
@@ -464,8 +464,8 @@ KAFKA_GROUP_ID=notifications-group
 REDIS_HOST=erp-redis
 REDIS_PORT=6379
 GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/google-sa.json
-GMAIL_SEND_AS=eventos@brandex.global
-GMAIL_FROM_NAME=Quantum · Brandex
+GMAIL_SEND_AS=prueba@prueba.com
+GMAIL_FROM_NAME=Quantum
 INTERNAL_API_KEY=<clave-compartida-con-core-inventory>
 ```
 
@@ -490,4 +490,4 @@ JWT_PUBLIC_KEY=<public key del auth-service>
 
 ---
 
-*Quantum ERP — Brandex Global · Sistema interno · No distribuir*
+*Quantum ERP — Sistema interno · No distribuir*

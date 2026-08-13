@@ -491,7 +491,7 @@ Ningún log puede contener:
 - Datos personales identificables (email, teléfono, dirección) en nivel INFO o superior
 - Payloads completos de request en producción (pueden contener datos sensibles)
 
-Los campos con datos sensibles se enmascaran: `"email": "c***@brandex.global"`, `"password": "[REDACTED]"`.
+Los campos con datos sensibles se enmascaran: `"email": "c***@gmail.com"`, `"password": "[REDACTED]"`.
 
 ---
 
@@ -791,7 +791,7 @@ TTL máximo de un lock: 30 segundos. Si el servicio falla mientras tiene el lock
 
 ### 10.1 Buckets por naturaleza del contenido
 
-Los buckets se organizan por el tipo de contenido, no por departamento ni por proyecto. Esta organización es agnóstica a la estructura organizacional de Brandex y se mantiene válida si la empresa crece, cambia departamentos o abre nuevas líneas de negocio.
+Los buckets se organizan por el tipo de contenido, no por departamento ni por proyecto. Esta organización es agnóstica a la estructura organizacional y se mantiene válida si la empresa crece, cambia departamentos o abre nuevas líneas de negocio.
 
 ```
 document     → Documentos estructurados: briefs, contratos, propuestas, facturas, actas
@@ -982,7 +982,7 @@ Todo el equipo sigue este proceso antes de implementar cualquier funcionalidad. 
 
 ### Los 8 pasos
 
-1. **Problema de negocio** — ¿Qué necesidad operacional real de Brandex estamos resolviendo?
+1. **Problema de negocio** — ¿Qué necesidad operacional real estamos resolviendo?
 2. **Bounded context** — ¿A qué dominio del Blueprint pertenece esta funcionalidad?
 3. **Validación contra Blueprint** — ¿El Blueprint ya contempla esta funcionalidad? Si no la contempla, hay que actualizar el Blueprint con un ADR antes de implementar.
 4. **Diseño de la solución** — ¿Cómo se implementa dentro del dominio responsable?
@@ -1059,7 +1059,7 @@ Link: </api/v2/projects>; rel="successor-version"
 
 ```json
 {
-  "type": "https://quantum.brandex.global/errors/resource-not-found",
+  "type": "https://quantum.com/errors/resource-not-found",
   "title": "Resource Not Found",
   "status": 404,
   "detail": "Project with id '550e8400-e29b-41d4-a716-446655440000' does not exist.",
@@ -1227,4 +1227,4 @@ Si la respuesta es "probablemente", "algún día" o "por si acaso" — no se imp
 
 *Este documento es complementario al `ARCHITECTURE_BLUEPRINT.md`. Los estándares aquí definidos implementan las decisiones arquitectónicas del Blueprint. Cualquier cambio en estos estándares debe justificarse en relación con el Blueprint.*
 
-*Platform Standards v1.0 — Quantum ERP — Brandex Global — 2026-08-03*
+*Platform Standards v1.0 — Quantum ERP — 2026-08-03*

@@ -3,7 +3,7 @@
 **Versión:** 1.0  
 **Fecha:** 2026-08-04  
 **Estado:** Diseño técnico (Sprint 6 — entregable formal)  
-**Clasificación:** Referencia técnica interna — Brandex Global
+**Clasificación:** Referencia técnica interna — Global
 
 ---
 
@@ -382,7 +382,7 @@ EngineDispatcher.dispatch(
 2. Verifica que ASSET_REGISTRY está activo para KeepMe
 3. Consulta Engine Registry → Inventory Engine
 4. Construye BusinessContext {
-     tenantId:      "brandex",
+     tenantId:      "empresa",
      capabilities:  ["ASSET_REGISTRY", "ASSIGNMENT", "INSPECTION", "KITS"],
      permissions:   ["INVENTORY_READ", "INVENTORY_WRITE", "INVENTORY_ASSIGN"],
      configuration: { qr_label_format: "QR_CODE_128", max_assignment_days: 30, ... },

@@ -3,7 +3,7 @@
 **Versión:** 0.2  
 **Fecha:** 2026-08-04  
 **Estado:** En definición — Sprint 5  
-**Clasificación:** Referencia técnica interna — Brandex Global
+**Clasificación:** Referencia técnica interna
 
 > Este documento es el mapa de Quantum. Antes de implementar cualquier Engine, esta entrada debe existir aquí. Antes de activar una Capability en un módulo, debe estar definida aquí. La pregunta no es "¿qué servicio hacemos?" sino "¿este requerimiento pertenece a qué Engine, y está en el catálogo?".
 
